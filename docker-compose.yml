@@ -1,0 +1,40 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_ADDR=redis:6379
+      - REDIS_PASSWORD=
+      - REDIS_DB=0
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=frhan
+      - DB_PASSWORD=db_postgres
+      - DB_NAME=dating-sim
+    depends_on:
+      - redis
+      - db
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=
+
+  db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: dating-sim
+      POSTGRES_USER: frhan
+      POSTGRES_PASSWORD: db_postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
