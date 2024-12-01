@@ -53,7 +53,7 @@
 
 ---
 
-## 📦 Installation
+## 📦 Local Installation
 
 1. Clone the repository:
    ```bash
@@ -61,7 +61,7 @@
    cd dating-sim-go
    ```
 
-2. Set up environment variables in a `.env` file:
+2. Set up environment variables in a `.env` or just copy `.env.example` file:
    ```plaintext
    REDIS_ADDR=localhost:6379
    REDIS_PASSWORD=
@@ -83,6 +83,30 @@
    ```
 
 ---
+
+## 📦 Installation using docker compose
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/dating-sim-go.git
+   cd dating-sim-go
+   ```
+
+2. Set up environment variables in a `.env` or just copy `.env.example` file:
+   ```plaintext
+   REDIS_ADDR=localhost:6379
+   REDIS_PASSWORD=
+   REDIS_DB=0
+   DB_HOST=your-database-host
+   DB_USER=your-database-user
+   DB_PASSWORD=your-database-password
+   DB_NAME=your-database-name
+   ```
+3. Build and start the services using Docker Compose:
+   ```bash
+    docker-compose up --build
+   ```
+4. Access the application at http://localhost:5000.
 
 ## 🛡️ Endpoints
 
@@ -116,7 +140,7 @@
 
 ## 👨‍💻 Contributors
 
-- **frhan**: Project Owner and Main Developer
+- **frhan23**: Project Owner and Main Developer
 
 Feel free to contribute to this project by submitting issues or pull requests. 😊
 
