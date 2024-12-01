@@ -4,7 +4,11 @@
 **`dating-sim-go`** is a backend application built in Go, designed to power a dating simulation experience. It provides features like user authentication, swipe mechanics, profile management, and more, all built with a focus on performance and scalability.
 
 ---
-[Technical Document](https://docs.google.com/document/d/e/2PACX-1vT8flrtJAYy6lN1G3s0UQIlfc--3XKrt-L29wp6naFUV5xUimjFeq0nwi_heou5B2OGCOQ7ANscP7oF/pub)
+
+## ✨ Technical Document
+
+for [Technical Document](https://docs.google.com/document/d/e/2PACX-1vT8flrtJAYy6lN1G3s0UQIlfc--3XKrt-L29wp6naFUV5xUimjFeq0nwi_heou5B2OGCOQ7ANscP7oF/pub) please go to this link
+
 ---
 
 ## 🚀 Features
