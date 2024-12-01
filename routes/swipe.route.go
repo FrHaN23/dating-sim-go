@@ -14,5 +14,6 @@ func SetupSwipeRoutes(mux *mux.Router, handler *handler.Swipe) {
 	{
 		prefix.HandleFunc("/{id:[0-9]+}/right", handler.Right)
 		prefix.HandleFunc("/{id:[0-9]+}/left", handler.Left)
+		prefix.HandleFunc("/view", handler.View)
 	}
 }

@@ -31,7 +31,7 @@ type User struct {
 	Age            uint       `json:"age"`
 	Bio            string     `json:"bio"`
 	DateOfBirth    *time.Time `json:"date_of_birth"`
-	Location       uint       `json:"location"`
+	Location       string     `json:"location"`
 	PreferanceID   uint       `json:"preferance_id"`
 	Preferance     Preferance `gorm:"constraint:OnDelete:CASCADE" json:"preferance"`
 	ProfilePicture string     `json:"profile_picture"`
@@ -41,6 +41,17 @@ type User struct {
 
 func (user *User) Get() error {
 	if query := db.DB.Omit("password").First(&user); query.Error != nil {
+		return query.Error
+	}
+	return nil
+}
+
+func (user *User) GetAll(users *[]User, size int, page int) error {
+	if query := db.DB.
+		Model(&user).
+		Omit("password, premium").
+		Scopes((db.Paginate(size, page))).
+		Find(&users); query.Error != nil {
 		return query.Error
 	}
 	return nil

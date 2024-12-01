@@ -34,27 +34,79 @@ type SwipeData struct {
 	LastSwipeDate  time.Time
 }
 
-// Should create 1 method swipped with added params action (like or pass)
+// NOTE: Should create one method swipped with added params action (like or pass)
 // swipe handles right swipe means like
 func (s *Swipe) Right(w http.ResponseWriter, r *http.Request) {
-	s.handleRequest(w, r, s.right)
+	s.handleRequest(w, r, s.right, http.MethodPost)
 }
 
 // swipe handles left swipe means pass.
 func (s *Swipe) Left(w http.ResponseWriter, r *http.Request) {
-	s.handleRequest(w, r, s.left)
+	s.handleRequest(w, r, s.left, http.MethodPost)
+}
+
+func (s *Swipe) View(w http.ResponseWriter, r *http.Request) {
+	s.handleRequest(w, r, s.viewHandler, http.MethodGet)
 }
 
 // handleRequest abstracts out the method checking and delegates to the handler.
-func (s *Swipe) handleRequest(w http.ResponseWriter, r *http.Request, handlerFunc func(w http.ResponseWriter, r *http.Request)) {
+func (s *Swipe) handleRequest(w http.ResponseWriter, r *http.Request, handlerFunc func(w http.ResponseWriter, r *http.Request), allowedMethod string) {
 	switch r.Method {
-	case http.MethodPost:
+	case allowedMethod:
 		handlerFunc(w, r)
 	case http.MethodOptions:
 		res.PreFlightJson(w, http.StatusNoContent, "POST, OPTIONS")
 	default:
 		res.PreFlightJson(w, http.StatusMethodNotAllowed, "POST, OPTIONS")
 	}
+}
+
+// View returns profiles that haven't been swiped by the user.
+func (s *Swipe) viewHandler(w http.ResponseWriter, r *http.Request) {
+	var user models.User
+	size, page := utils.Paginate(w, r)
+	userID, err := utils.GetUserIDFromContext(r)
+	if err != nil {
+		log.Print(err)
+		res.ResErrJson(
+			w,
+			http.StatusInternalServerError,
+			errors.New("failed to get user id"),
+		)
+		return
+	}
+
+	// Fetch swipe data from Redis
+	swipeData, err := s.getSwipeDataFromRedis(userID)
+	if err != nil {
+		log.Print(err)
+		res.ResErrJson(
+			w,
+			http.StatusInternalServerError,
+			errors.New("failed to get user swipe data from Redis"),
+		)
+		return
+	}
+	// NOTE: need improvement, move all queries to db for eficiency so paginate function properly
+	var allProfiles []models.User
+	if err := user.GetAll(&allProfiles, size, page); err != nil {
+		log.Print(err)
+		res.ResErrJson(
+			w,
+			http.StatusInternalServerError,
+			errors.New("failed to fetch profiles"),
+		)
+		return
+	}
+
+	unviewedProfiles := filterUnviewedProfiles(allProfiles, swipeData.SwipedProfiles)
+
+	// Respond with the unviewed profiles
+	res.ResOkJSON(w, &types.Res{
+		Message: "profiles retrieved successfully",
+		Data:    unviewedProfiles,
+		Count:   len(unviewedProfiles),
+	})
 }
 
 // right handles right swipe (like) action.
@@ -274,4 +326,23 @@ func contains(profiles []uint, profileID uint) bool {
 		}
 	}
 	return false
+}
+
+// filterUnviewedProfiles filters profiles that haven't been swiped by the user
+func filterUnviewedProfiles(allProfiles []models.User, swipedProfiles []uint) []models.User {
+	// Create a set for fast lookup of swiped profiles
+	swipedSet := make(map[uint]struct{})
+	for _, id := range swipedProfiles {
+		swipedSet[id] = struct{}{}
+	}
+
+	// Filter profiles that are not in the swiped set
+	unviewed := []models.User{}
+	for _, profile := range allProfiles {
+		if _, found := swipedSet[profile.ID]; !found {
+			unviewed = append(unviewed, profile)
+		}
+	}
+
+	return unviewed
 }
