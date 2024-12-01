@@ -1,8 +1,7 @@
-// routes/auth_routes.go
 package routes
 
 import (
-	"dating-sim/handler" // Import the handler package
+	"dating-sim/handler"
 
 	"github.com/gorilla/mux"
 )

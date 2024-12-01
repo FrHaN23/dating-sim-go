@@ -1,9 +1,8 @@
-// routes/routes.go
 package routes
 
 import (
 	"dating-sim/db"
-	"dating-sim/handler" // Import all the handlers
+	"dating-sim/handler"
 
 	"dating-sim/redis"
 

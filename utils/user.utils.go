@@ -21,14 +21,12 @@ func CheckPasswordHash(password, hash string) bool {
 
 // getProfileIDFromRequest extracts the profile ID from the URL path (e.g., /swipe/{id}/right).
 func GetProfileIDFromRequest(r *http.Request) (uint, error) {
-	// Extract the profile ID from the URL parameters
 	vars := mux.Vars(r)
 	profileIDStr, exists := vars["id"]
 	if !exists {
 		return 0, fmt.Errorf("profile ID not found in URL")
 	}
 
-	// Convert the profile ID from string to uint
 	profileID, err := strconv.Atoi(profileIDStr)
 	if err != nil {
 		return 0, fmt.Errorf("invalid profile ID format")

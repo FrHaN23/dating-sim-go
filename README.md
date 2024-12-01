@@ -108,6 +108,10 @@
    ```
 4. Access the application at http://localhost:5000.
 
+## 🧪 Testing
+
+All testing of endpoints included at `dating-sim-go.postman_collection.json` using postman and other alternatives
+
 ## 🛡️ Endpoints
 
 ### **Health Check**
