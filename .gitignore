@@ -1,0 +1,7 @@
+/vendor
+.env
+chacha_web
+/vendor
+/target
+go.work
+go.work.sum
