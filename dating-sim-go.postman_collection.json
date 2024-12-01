@@ -1,0 +1,574 @@
+{
+	"info": {
+		"_postman_id": "86975614-8e77-4256-97cd-28c1e910056f",
+		"name": "dating-sim-go",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n``` antlr4\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" width=\"2162\" height=\"1530\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32908615"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for successful signup",
+									"pm.test(\"Response status code is 201 for successful signup\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"pm.test(\"Response body for successful signup contains message and data\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.equal(\"ok\");",
+									"    pm.expect(responseData.data).to.equal(\"user created\");",
+									"});",
+									"",
+									"// Test for missing required fields",
+									"pm.test(\"Response status code is 400 for missing required fields\", function () {",
+									"    pm.expect(pm.response.code).to.equal(400);",
+									"});",
+									"",
+									"pm.test(\"Response body for missing required fields contains error message\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.equal(\"missing requried fields\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"cihuy16\",\n    \"password\": \"cihuy123\",\n    \"email\": \"cihuy@wow.com\",\n    \"gender\": \"Moster Detonator\",\n    \"age\":25,\n    \"preferance\": {\n        \"interested_in\": \"Hiking,Shopping,Eat,Sleep\",\n        \"age_range\": 23,\n        \"max_distance_km\": 50\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}:{{port}}/api/v1/auth/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"signup"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test for successful login (e.g., correct username/password)",
+									"pm.test(\"Response status code is 200 for valid credentials\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"pm.test(\"Response body for valid login contains message and data\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.equal(\"ok\");",
+									"    pm.expect(responseData.data).to.exist;",
+									"});",
+									"",
+									"pm.test(\"Response data contains token and type for valid login\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData.data.token).to.exist;",
+									"    pm.expect(responseData.data.type).to.exist;",
+									"});",
+									"",
+									"pm.test(\"Token is a valid JWT format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    const token = responseData.data.token;",
+									"",
+									"    pm.expect(token).to.be.a('string').and.to.match(/^[A-Za-z0-9\\-_.]+\\.[A-Za-z0-9\\-_.]+\\.[A-Za-z0-9\\-_.]+$/, \"Token format is not valid\");",
+									"});",
+									"",
+									"pm.test(\"Type is 'bearer'\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.data.type).to.equal(\"bearer\");",
+									"});",
+									"",
+									"// Additional tests",
+									"pm.test(\"Response time is less than 200ms for valid login\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type header is application/json for both valid and invalid login\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"// Check if the token is returned as a non-empty string",
+									"pm.test(\"Token in the response data is a non-empty string for valid login\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData.data.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should be a non-empty string\");",
+									"});",
+									"",
+									"// Check if the type in the response data is a non-empty string for valid login",
+									"pm.test(\"Validate type in the response data is a non-empty string for valid login\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.data.type).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Type should not be empty\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"cihuy\",\n    // \"password\": \"cihuyyy\"\n    \"password\": \"cihuy123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}:{{port}}/api/v1/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "upgrade",
+			"item": [
+				{
+					"name": "Premium",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required Content-Type header with value application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message field is present in the response\", function () {",
+									"  const responseData = pm.response.json();",
+									"  pm.expect(responseData.message).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message field is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message field has a valid format or expected value\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.message).to.be.a('string');",
+									"  // Add more specific tests for the expected format or value of the message field if needed",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzMwNjc1NjAsImlhdCI6MTczMjk4MTE2MCwiaWQiOjEsInByZW1pdW0iOm51bGwsInVzZXJuYW1lIjoiY2lodXkifQ.4WsKGqIHjNyh8HB-xgSQJznFl7n_KSblp-P9oEpHluU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}:{{port}}/api/v1/upgrade/premium",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"upgrade",
+								"premium"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Swipe",
+			"item": [
+				{
+					"name": "Right",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 409\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message field is present in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzMwOTkxMTIsImlhdCI6MTczMzAxMjcxMiwiaWQiOjEsInByZW1pdW0iOiIyMDI0LTEyLTAxVDAwOjMzOjIxLjQ2ODMxMSswNzowMCIsInVzZXJuYW1lIjoiY2lodXkifQ.C0asJsLXFn34YzlaoWllxr6YvBlNCbF8nrO12SdwraE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}:{{port}}/api/v1/swipe/12/right",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"swipe",
+								"12",
+								"right"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Left",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(409);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message field is present in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzMwOTkxMTIsImlhdCI6MTczMzAxMjcxMiwiaWQiOjEsInByZW1pdW0iOiIyMDI0LTEyLTAxVDAwOjMzOjIxLjQ2ODMxMSswNzowMCIsInVzZXJuYW1lIjoiY2lodXkifQ.C0asJsLXFn34YzlaoWllxr6YvBlNCbF8nrO12SdwraE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}:{{port}}/api/v1/swipe/10/left",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"swipe",
+								"10",
+								"left"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Me",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"pm.test(\"Age is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data.age).to.be.a('number');",
+									"    pm.expect(responseData.data.age).to.be.at.least(0, \"Age should be a non-negative integer\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzMwNjc1NjAsImlhdCI6MTczMjk4MTE2MCwiaWQiOjEsInByZW1pdW0iOm51bGwsInVzZXJuYW1lIjoiY2lodXkifQ.4WsKGqIHjNyh8HB-xgSQJznFl7n_KSblp-P9oEpHluU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}:{{port}}/api/v1/profile/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200 successful\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message field is present in the response\", function () {",
+									"  const responseData = pm.response.json();",
+									"  pm.expect(responseData.message).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response does not contain sensitive information such as passwords\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.password).to.not.exist;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzMwNjcwNjgsImlhdCI6MTczMjk4MDY2OCwiaWQiOjEsInByZW1pdW0iOm51bGwsInVzZXJuYW1lIjoiY2lodXkifQ.yvp7GhyelyafZ3I3-Sn3GzyelTIcXsZCpOOtRXS6WN8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"old_password\": \"cihuyyy\",\n    \"new_password\": \"cihuy123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}:{{port}}/api/v1/profile/password",
+							"host": [
+								"{{base_url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}:{{port}}/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"health"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "inherit"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}

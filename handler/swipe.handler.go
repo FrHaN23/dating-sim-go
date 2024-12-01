@@ -34,6 +34,7 @@ type SwipeData struct {
 	LastSwipeDate  time.Time
 }
 
+// Should create 1 method swipped with added params action (like or pass)
 // swipe handles right swipe means like
 func (s *Swipe) Right(w http.ResponseWriter, r *http.Request) {
 	s.handleRequest(w, r, s.right)
@@ -180,6 +181,7 @@ func (s *Swipe) left(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
+
 	profileID, err := utils.GetProfileIDFromRequest(r)
 	if err != nil {
 		log.Print(err)

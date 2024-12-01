@@ -34,6 +34,7 @@ func main() {
 		}
 		listener.Close()
 	}()
+	defer redis.Close()
 	log.Print("listening at " + listener.Addr)
 	log.Fatal(listener.ListenAndServe())
 }
